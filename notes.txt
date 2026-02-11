@@ -1,0 +1,8 @@
+Macros
+
+Types of Macors:
+    Procedural macros : used to make difficult things
+        custom derive: similar to traits
+        attribute :
+        function : close to declarative macros
+    Declarative macros : used to make simpler things

@@ -20,48 +20,43 @@
 //     println!("Area of Rec is {}", shape.area());
 // }
 
-use std::sync::WaitTimeoutResult;
-
 trait Limiter {
     fn allow(&mut self) -> bool;
 }
 struct FixedWindowLimiter {
-    max_requests: u32,
-    current_requests: u32,
+    current_rrequests: u32,
+    max_request: u32,
 }
 
 impl Limiter for FixedWindowLimiter {
     fn allow(&mut self) -> bool {
-        self.current_requests = self.current_requests + 1;
-        if self.current_requests > self.max_requests {
-            return false;
+        self.current_rrequests = self.current_rrequests + 1;
+        if self.current_rrequests > self.max_request {
+            true
+        } else {
+            false
         }
-        return true;
     }
 }
 
 struct Service<T: Limiter> {
     limiter: T,
 }
+
 impl<T: Limiter> Service<T> {
     fn handle_request(&mut self) {
         if self.limiter.allow() {
-            println!("Request processed");
+            println!("Request Accepted");
         } else {
-            println!("Rate Limit Exceeded");
+            println!("Rate Limit Reached");
         }
     }
 }
-
 fn main() {
-    let mut fixed_window = FixedWindowLimiter {
-        max_requests: 3,
-        current_requests: 0,
+    let mut u = FixedWindowLimiter {
+        current_rrequests: 0,
+        max_request: 4,
     };
-    let mut service = Service {
-        limiter: fixed_window,
-    };
-    for i in 0..5 {
-        println!("is allowed {:?}", service.handle_request());
-    }
+    let mut v = Service { limiter: u };
+    println!("{:?}", v.handle_request());
 }

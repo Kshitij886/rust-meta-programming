@@ -1,0 +1,30 @@
+// creating our own custom derive macros
+// Create a simple Serialize and Deserilize macros that would implement the serialize and deserialize traits
+
+use std::io::Error;
+
+trait Serialize {
+    fn serialize(&self) -> Vec<u8>;
+}
+
+trait Deserialize {
+    fn deserialize(base: Vec<u8>) -> Swap;
+}
+
+struct Swap {
+    qty_1: u32,
+    qty_2: u32,
+}
+
+impl Serialize for Swap {
+    fn serialize(&self) -> Vec<u8> {
+        let mut v = Vec::new();
+        v.extend_from_slice(&self.qty_1.to_be_bytes());
+        v.extend_from_slice(&self.qty_2.to_be_bytes());
+        return v;
+    }
+}
+
+fn main() {
+    println!("hello");
+}

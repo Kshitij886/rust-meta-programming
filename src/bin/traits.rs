@@ -31,7 +31,7 @@ struct FixedWindowLimiter {
 impl Limiter for FixedWindowLimiter {
     fn allow(&mut self) -> bool {
         self.current_rrequests = self.current_rrequests + 1;
-        if self.current_rrequests > self.max_request {
+        if self.current_rrequests < self.max_request {
             true
         } else {
             false
